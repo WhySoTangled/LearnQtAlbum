@@ -28,7 +28,7 @@ ProTreeWidget::ProTreeWidget( QWidget *parent ) : QTreeWidget( parent ),
     connect(_action_closepro, &QAction::triggered, this, &ProTreeWidget::SlotClosePro);
     connect(_action_setstart, &QAction::triggered, this, &ProTreeWidget::SlotSetActive);
 //    connect(_action_slideshow, &QAction::triggered, this, &ProTreeWidget::SlotSlideShow);
-
+    connect(this, &ProTreeWidget::itemDoubleClicked, this, &ProTreeWidget::SlotDoubleClickItem);
 }
 
 void ProTreeWidget::AddProToTree(const QString &name, const QString &path)
@@ -177,7 +177,7 @@ void ProTreeWidget::SlotClosePro()
     bool b_remove = remove_pro_dialog.isRemoved();
     auto index_right_btn = this->indexOfTopLevelItem(_right_btn_item);
     auto * protreeitem = dynamic_cast<ProTreeItem*>(_right_btn_item);
-//    auto * selecteditem = dynamic_cast<ProTreeItem*>(_selected_item);
+    auto * selecteditem = dynamic_cast<ProTreeItem*>(_selected_item);
     auto delete_path = protreeitem->GetPath();
     _set_path.remove(delete_path);
 
@@ -188,6 +188,13 @@ void ProTreeWidget::SlotClosePro()
 
     if (protreeitem == _active_item) {
         _active_item = nullptr;
+    }
+
+    // the protreeitem which will de deleted if the root of selecteditem
+    if (selecteditem && protreeitem == selecteditem->GetRoot()) {
+        selecteditem = nullptr;
+        _selected_item = nullptr; // will be delete
+        emit SigClearSelected();
     }
 
     delete this->takeTopLevelItem(index_right_btn);
@@ -219,6 +226,23 @@ void ProTreeWidget::SlotFinishOpenProgress()
     _open_progressdlg->deleteLater();
 }
 
+void ProTreeWidget::SlotDoubleClickItem(QTreeWidgetItem *item, int column)
+{
+    if (QGuiApplication::mouseButtons() == Qt::LeftButton) {
+        auto * tree_doubleItem = dynamic_cast<ProTreeItem*>(item);
+        if (!tree_doubleItem) {
+            return ;
+        }
+
+        int itemtype = tree_doubleItem->type();
+        if (itemtype == TreeItemPic) {
+            // send path of pic which is clicked
+            emit SigUpdateSelected(tree_doubleItem->GetPath());
+            _selected_item = item;
+        }
+    }
+}
+
 void ProTreeWidget::SlotOpenPro(const QString &path)
 {
     if (_set_path.find(path) != _set_path.end()) {
@@ -247,4 +271,39 @@ void ProTreeWidget::SlotOpenPro(const QString &path)
 
     _thread_open_pro->start();
     _open_progressdlg->exec();
+}
+
+void ProTreeWidget::SlotPreShow()
+{
+    if (!_selected_item) {
+//        qDebug() << "ProTreeWidget::SlotPreShow() : _selected_item is empty!" << endl;
+        return;
+    }
+
+    auto * curItem = dynamic_cast<ProTreeItem*>(_selected_item)->GetPreItem();
+    if (!curItem) {
+//        qDebug() << "ProTreeWidget::SlotPreShow() : curItem is empty!" << endl;
+        return ;
+    }
+
+    emit SigUpdatePic(curItem->GetPath());
+    _selected_item = curItem;
+    this->setCurrentItem(curItem);
+}
+
+void ProTreeWidget::SlotNextShow()
+{
+//    qDebug() << "ProTreeWidget::SlotNextShow() -- 1" << endl;
+    if (!_selected_item) {
+        return;
+    }
+//    qDebug() << "ProTreeWidget::SlotNextShow() -- 2" << endl;
+    auto * curItem = dynamic_cast<ProTreeItem*>(_selected_item)->GetNextItem();
+    if (!curItem) {
+        return ;
+    }
+//    qDebug() << "ProTreeWidget::SlotNextShow() -- 3" << endl;
+    emit SigUpdatePic(curItem->GetPath());
+    _selected_item = curItem;
+    this->setCurrentItem(curItem);
 }

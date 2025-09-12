@@ -35,7 +35,9 @@ SOURCES += \
     src/protreeitem.cpp \
     src/protreethread.cpp \
     src/removeprodialog.cpp \
-    src/opentreethread.cpp
+    src/opentreethread.cpp \
+    src/picshow.cpp \
+    src/picbutton.cpp
 
 HEADERS += \
         inc/mainwindow.h \
@@ -48,7 +50,9 @@ HEADERS += \
     inc/const.h \
     inc/protreethread.h \
     inc/removeprodialog.h \
-    inc/opentreethread.h
+    inc/opentreethread.h \
+    inc/picshow.h \
+    inc/picbutton.h
 
 FORMS += \
         ui/mainwindow.ui \
@@ -56,7 +60,8 @@ FORMS += \
     ui/prosetpage.ui \
     ui/confirmpage.ui \
     ui/protree.ui \
-    ui/removeprodialog.ui
+    ui/removeprodialog.ui \
+    ui/picshow.ui
 
 RESOURCES += \
     rc.qrc

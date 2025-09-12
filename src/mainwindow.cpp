@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "picshow.h"
 #include "protree.h"
 #include "protreewidget.h"
 #include "wizard.h"
@@ -44,11 +45,37 @@ MainWindow::MainWindow(QWidget *parent) :
     QTreeWidget* tree_widget = dynamic_cast<ProTree*>(_protree)->GetTreeWidget();
     auto * pro_tree_widget = dynamic_cast<ProTreeWidget*>(tree_widget);
     connect(this, &MainWindow::SigOpenPro, pro_tree_widget, &ProTreeWidget::SlotOpenPro);
+
+    _picshow = new PicShow();
+    ui->picLayout->addWidget(_picshow);
+    auto * pro_pic_show = dynamic_cast<PicShow*>(_picshow);
+
+    connect(pro_tree_widget, &ProTreeWidget::SigUpdateSelected,
+            pro_pic_show, &PicShow::SlotSelectItem);
+
+    connect(pro_pic_show, &PicShow::SigPreClicked,
+            pro_tree_widget, &ProTreeWidget::SlotPreShow);
+    connect(pro_pic_show, &PicShow::SigNextClicked,
+            pro_tree_widget, &ProTreeWidget::SlotNextShow);
+    connect(pro_tree_widget, &ProTreeWidget::SigUpdatePic,
+            pro_pic_show, &PicShow::SlotUpdatePro);
+    connect(pro_tree_widget, &ProTreeWidget::SigClearSelected,
+            pro_pic_show, &PicShow::SlotDeleteItem);
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    QMainWindow::resizeEvent(event);
+    auto * pro_pic_show = dynamic_cast<PicShow*>(_picshow);
+    pro_pic_show->ReloadPic();
+//    qDebug() << "ReloadPic()" <<endl;
+
 }
 
 void MainWindow::SlotCreatePro( bool )

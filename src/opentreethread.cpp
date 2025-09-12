@@ -86,9 +86,9 @@ void OpenTreeThread::RecursiveProTree(const QString &src_path, int &file_count, 
             if (preitem) {
                 auto * pre_proitem = dynamic_cast<ProTreeItem*>(preitem);
                 pre_proitem->SetNextItem(item);
-                item->SetPreItem(preitem);
-                preitem = item;
             }
+            item->SetPreItem(preitem);
+            preitem = item;
         }
     }
 //    emit SigFinishProgress(file_count);
