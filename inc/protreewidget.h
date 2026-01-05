@@ -6,11 +6,33 @@
 #include <QPointer>
 #include <QProgressDialog>
 #include <QTreeWidget>
-
 #include "inc/protreethread.h"
 #include "inc/opentreethread.h"
 
 class SlideShowDlg;
+
+//========================================================================
+// ProTreeWidget(QTreeWidget)
+// ├── menu(QMenu, appear when RightButton clicked)
+// │   ├── _action_import(QAction)
+// │   ├── _action_setstart
+// │   ├── _action_closepro
+// │   └── _action_slideshow
+// │
+// │
+// │ [project and pro's directory and pro's picture]
+// │ [modified by _thread_create_pro and _thread_open_pro]
+// ├── treeItemPro_1(ProTreeItem, type == TreeItemPro)
+// ├── treeItemPro_2(ProTreeItem, TreeItemPro)
+// └── treeItemPro_3(ProTreeItem, TreeItemPro)
+//     ├── treeItemPic_1(ProTreeItem, TreeItemPic)
+//     ├── treeItemDir_2(ProTreeItem, TreeItemDir)
+//     └── treeItemDir_3(ProTreeItem, TreeItemDir)
+//         ├── treeItemPic_3_1(ProTreeItem, TreeItemPic)
+//         └── treeItemPic_3_2(ProTreeItem, TreeItemPic)
+//========================================================================
+
+
 
 class ProTreeWidget : public QTreeWidget
 {

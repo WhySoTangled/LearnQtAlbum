@@ -8,6 +8,17 @@ namespace Ui {
 class MainWindow;
 }
 
+//================================================
+// MainWindow
+// ├── _protree(ProTree, left)
+// │   ├── label_pro(QLabel)
+// │   └── treeWidget(ProTreeWidget)
+// │      ├── item_1(ProTreeItem)
+// │      ├── item_2(ProTreeItem)
+// │      └── item_3(ProTreeItem)
+// │
+// └── _picshow(PicShow, right)
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

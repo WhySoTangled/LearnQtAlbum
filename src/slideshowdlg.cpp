@@ -22,7 +22,9 @@ SlideShowDlg::SlideShowDlg(QWidget *parent, QTreeWidgetItem *first_item, QTreeWi
                           ":/icon/play_press.png",
                           ":/icon/pause.png",
                           ":/icon/pause_hover.png",
-                          ":/icon/previous_press.png");
+                          ":/icon/pause_press.png");
+    ui->picAnimation->SetPixmap(_first_item);
+    ui->picAnimation->Start();
 }
 
 SlideShowDlg::~SlideShowDlg()

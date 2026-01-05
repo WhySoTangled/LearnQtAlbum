@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 INCLUDEPATH += $$PWD/inc
 
 SOURCES += \
+        src/picanimationwid.cpp \
         src/picstatebtn.cpp \
         src/slideshowdlg.cpp \
         src/main.cpp \
@@ -45,6 +46,7 @@ SOURCES += \
 
 HEADERS += \
         inc/mainwindow.h \
+        inc/picanimationwid.h \
         inc/picstatebtn.h \
         inc/wizard.h \
         inc/prosetpage.h \

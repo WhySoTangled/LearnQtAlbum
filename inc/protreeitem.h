@@ -4,6 +4,16 @@
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 
+//========== project and pro's directory and pro's picture ==========
+// [modefied by OpenTreeThread and ProTreeThread]
+// itemPro(ProTreeItem, type == TreeItemPro)
+// ├── itemPic_1(ProTreeItem, TreeItemPic)
+// ├── itemDir_2(ProTreeItem, TreeItemDir)
+// └── itemDir_3(ProTreeItem, TreeItemDir)
+//     ├── itemPic_3_1(ProTreeItem, TreeItemPic)
+//     └── itemPic_3_2(ProTreeItem, TreeItemPic)
+//===================================================================
+
 class ProTreeItem : public QTreeWidgetItem
 {
 public:

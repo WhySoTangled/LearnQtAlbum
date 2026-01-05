@@ -7,10 +7,21 @@ class PicStateBtn : public QPushButton
 {
 public:
     PicStateBtn(QWidget *parent = nullptr);
+    virtual ~PicStateBtn() {};
     void SetIcons(const QString& normal, const QString& hover, const QString& pressed,
                   const QString& normal_2, const QString& hover_2, const QString& pressed_2);
+protected:
+    bool event(QEvent *e) override;
 
 private:
+    // 当QEvent发生时，根据event->type()类型和_cur_state改变btn的icon
+    void setNormalIcon();
+    void setHoverIcon();
+    void setPressIcon();
+    void setNormal2Icon();
+    void setHover2Icon();
+    void setPress2Icon();
+
     QString _normal;
     QString _hover;
     QString _pressed;

@@ -2,6 +2,7 @@
 #include "inc/opentreethread.h"
 #include "inc/protreeitem.h"
 #include <QDir>
+#include <QDebug>
 
 OpenTreeThread::OpenTreeThread(const QString &src_path, int file_count, QTreeWidget *self)
     : _bstop(false), _src_path(src_path), _file_count(file_count),
@@ -12,7 +13,10 @@ OpenTreeThread::OpenTreeThread(const QString &src_path, int file_count, QTreeWid
 
 /**
  * @brief a func that will be called by this->run()
-*/
+ * @param src_path : selected imported folder's path
+ * @param file_count : file count starting from 0
+ * @param self : parent QTreeWidget
+**/
 void OpenTreeThread::OpenProTree(const QString &src_path, int &file_count, QTreeWidget *self)
 {
     QDir src_dir(src_path);
@@ -47,6 +51,15 @@ void OpenTreeThread::run()
     emit SigFinishProgress(_file_count);
 }
 
+/**
+ * @brief
+ * @param src_path :
+ * @param file_count
+ * @param self
+ * @param root
+ * @param parent
+ * @param preitem :
+**/
 void OpenTreeThread::RecursiveProTree(const QString &src_path, int &file_count, QTreeWidget *self, QTreeWidgetItem *root, QTreeWidgetItem *parent, QTreeWidgetItem *preitem)
 {
     QDir src_dir(src_path);
@@ -90,6 +103,14 @@ void OpenTreeThread::RecursiveProTree(const QString &src_path, int &file_count, 
                 auto * pre_proitem = dynamic_cast<ProTreeItem*>(preitem);
                 pre_proitem->SetNextItem(item);
             }
+
+            qDebug() << "cur_item : " << item->GetPath() << Qt::endl;
+            if (preitem) {
+                auto * pre_proitem = dynamic_cast<ProTreeItem*>(preitem);
+                qDebug() << "    cur_item's pre" << pre_proitem->GetPath() << Qt::endl;
+                qDebug() << "    cur_item's pre's next" << pre_proitem->GetNextItem()->GetPath() << Qt::endl;
+            }
+
             item->SetPreItem(preitem);
             preitem = item;
         }

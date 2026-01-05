@@ -8,6 +8,15 @@ namespace Ui {
 class ProTree;
 }
 
+//===============================================
+// _protree(ProTree)
+// ├── label_pro(QLabel, qss set hide)
+// └── treeWidget(ProTreeWidget)
+//     ├── item_1(ProTreeItem, type() == TreeItemPro)
+//     ├── item_2(ProTreeItem, TreeItemPro)
+//     └── item_3(ProTreeItem)
+//===============================================
+
 class ProTree : public QDialog
 {
     Q_OBJECT
