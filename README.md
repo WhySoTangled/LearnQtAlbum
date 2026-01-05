@@ -37,3 +37,21 @@ file_dialog.setOption(QFileDialog::ShowDirsOnly);
 ![放大且全屏](./assets/screenShot_5.PNG)
 
 ![缩小时图片跟着变化](./assets/screenShot_6.PNG)
+
+渲染分离，重写线程，完全看不懂了，……唉
+
+功能
+
+`QGraphicsOpacityEffect`提供透明度相关的设置，它提供`setOpacity()`功能设置透明度，透明度在0-1之间，0是完全透明，1是完全不透明。    需要用到`QWidget::setGraphicsEffect(QGraphicsEffect *effect)`，我看qt的文档把前面透明度的实例称为effect，把`QWidget`的实例称为widget，用这个方法把effect装入widget，这个安装会把widget之前安装的effect删除（不知道原先的effect是否还能被复用，还是其占用的内存已经被删除了），同时如果要安装的这个effect已经被别的widget装了的话，会卸下来给这个widget装上。    因此我写两个`QPushButton`，给两个button设置透明度，需要创建两个透明度实例。
+
+
+
+互引用，两个头文件`a.h`和`b.h`互相引用，解决方式是前向声明，假设`a.h`内是类A的声明，`b.h`内是类B的声明，在`a.h`内用`class B;`前向声明类B，在`a.cpp`内引用`b.h`；`b.h`和`b.cpp`内同理。    补充：适用于只需要指针、引用和返回值类型时。 使用`#pragma once`防止重复包含。
+
+
+
+目前，关于slideShowDlg界面的qss配置有问题，四个qpushbutton的效果有点奇怪，并且我发现，closeBtn的定义，qss文件内其他的ui文件也有同名的，不知道是否是这种情况导致的bug。    qss在assistant里用Qt  Style Sheets搜索。
+
+
+
+https://www.bilibili.com/video/BV1eD4y1M7pa?t=3847.9

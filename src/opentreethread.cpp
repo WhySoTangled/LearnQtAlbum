@@ -10,6 +10,9 @@ OpenTreeThread::OpenTreeThread(const QString &src_path, int file_count, QTreeWid
 
 }
 
+/**
+ * @brief a func that will be called by this->run()
+*/
 void OpenTreeThread::OpenProTree(const QString &src_path, int &file_count, QTreeWidget *self)
 {
     QDir src_dir(src_path);
@@ -56,7 +59,7 @@ void OpenTreeThread::RecursiveProTree(const QString &src_path, int &file_count, 
         }
         QFileInfo fileInfo = list.at(i);
         bool bIsDir = fileInfo.isDir();
-        if (bIsDir) {
+        if (bIsDir) { // this object points to a directory
             if (_bstop) {
                 return;
             }
@@ -68,7 +71,7 @@ void OpenTreeThread::RecursiveProTree(const QString &src_path, int &file_count, 
             item->setData(0, Qt::DecorationRole, QIcon(":/icon/dir.png"));
             item->setData(0, Qt::ToolTipRole, fileInfo.absoluteFilePath());
             RecursiveProTree(fileInfo.absoluteFilePath(), file_count, self, _root, item, preitem);
-        } else {
+        } else { // this object doesn't point to a directory, which may be a pic
             if (_bstop) {
                 return;
             }

@@ -56,6 +56,9 @@ bool ProSetPage::isComplete() const
      return QWizardPage::isComplete();
 }
 
+/**
+ * @brief 添加浏览按钮点击后选择文件夹的操作
+**/
 void ProSetPage::on_pushButton_clicked()
 {
     QFileDialog file_dialog;

@@ -91,7 +91,7 @@ QTreeView::branch:closed:has-children:!has-siblings,
 QTreeView::branch:closed:has-children:has-siblings
 {image: url(:/icon/right.png);}
 
-#nextBtn,#closeBtn,#previousBtn  {
+#nextBtn,#previousBtn  {
     border: 0px;
 }
 
@@ -114,15 +114,21 @@ SlideShowDlg {
     background: rgb(38, 95, 153);
 }
 
-#slidpreBtn,#slidenextBtn,#playBtn {
+SlideShowDlg QPushButton {
     border: 0px;
 }
 
-#slideprewid {
+/*
+#slidePreBtn,#slideNextBtn,#playBtn,#closeBtn {
+    border: 0px;
+    //background-color: red;
+}*/
+
+#slidePreWidget {
     margin-left:10px;
 }
 
-#slidenextwid{
+#slideNextWidget{
     margin-right:10px;
 }
 

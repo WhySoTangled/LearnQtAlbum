@@ -80,7 +80,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
 void MainWindow::SlotCreatePro( bool )
 {
-    qDebug() << "slot create pro triggered" << endl;
+    qDebug() << "slot create pro triggered" << Qt::endl;
     Wizard wizard( this );
     wizard.setWindowTitle(tr( "创建项目" ));
     auto *page = wizard.page( 0 );

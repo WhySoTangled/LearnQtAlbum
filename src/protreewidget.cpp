@@ -9,6 +9,7 @@
 #include "inc/protreewidget.h"
 #include "inc/protreeitem.h"
 #include "inc/removeprodialog.h"
+#include "slideshowdlg.h"
 
 ProTreeWidget::ProTreeWidget( QWidget *parent ) : QTreeWidget( parent ),
     _right_btn_item(nullptr), _active_item(nullptr), _selected_item(nullptr),
@@ -27,10 +28,14 @@ ProTreeWidget::ProTreeWidget( QWidget *parent ) : QTreeWidget( parent ),
     connect(_action_import, &QAction::triggered, this, &ProTreeWidget::SlotImport);
     connect(_action_closepro, &QAction::triggered, this, &ProTreeWidget::SlotClosePro);
     connect(_action_setstart, &QAction::triggered, this, &ProTreeWidget::SlotSetActive);
-//    connect(_action_slideshow, &QAction::triggered, this, &ProTreeWidget::SlotSlideShow);
+    connect(_action_slideshow, &QAction::triggered, this, &ProTreeWidget::SlotSlideShow);
     connect(this, &ProTreeWidget::itemDoubleClicked, this, &ProTreeWidget::SlotDoubleClickItem);
 }
 
+/**
+ * @brief add a new ProTreeItem to this ProTreeWidget
+ * @note
+ **/
 void ProTreeWidget::AddProToTree(const QString &name, const QString &path)
 {
     QDir dir(path);
@@ -82,7 +87,7 @@ void ProTreeWidget::SlotImport()
     file_dialog.setWindowTitle("选择导入的文件夹");
     QString path;
     if(!_right_btn_item){
-        qDebug() << "_right_btn_item is empty" << endl;
+        qDebug() << "_right_btn_item is empty" << Qt::endl;
         return ;
     }
 
@@ -115,6 +120,8 @@ void ProTreeWidget::SlotImport()
             this, &ProTreeWidget::SlotCancelProgress);
     connect(this, &ProTreeWidget::SigCancelProgress,
             _thread_create_pro.get(), &ProTreeThread::SlotCancelProgress);
+
+    // thread run
     _thread_create_pro->start();
 
     _dialog_progress->setWindowTitle("Please wait...");
@@ -214,7 +221,9 @@ void ProTreeWidget::SlotUpdateOpenProgress(int count)
     }
 }
 
-// @brief slots, about _open_progressdlg
+/**
+ *  @brief slots, about _open_progressdlg
+*/
 void ProTreeWidget::SlotFinishOpenProgress()
 {
     if (!_open_progressdlg) {
@@ -241,6 +250,31 @@ void ProTreeWidget::SlotDoubleClickItem(QTreeWidgetItem *item, int column)
             _selected_item = item;
         }
     }
+}
+
+/**
+ * @brief a slot function about QAction(_action_slideshow)
+*/
+void ProTreeWidget::SlotSlideShow()
+{
+    if (!_right_btn_item) {
+        return ;
+    }
+    auto * right_pro_item = dynamic_cast<ProTreeItem*>(_right_btn_item);
+    auto * last_child_item = right_pro_item->GetLastPicChild();
+    if (!last_child_item) {
+        return ;
+    }
+
+    auto * first_child_item = right_pro_item->GetFirstPicChild();
+    if (!first_child_item) {
+        return ;
+    }
+    qDebug() << "first_child_item  is " << first_child_item->GetPath();
+    qDebug() << "last_child_item  is " << last_child_item->GetPath();
+    _slide_show_dlg = std::make_shared<SlideShowDlg>(this, first_child_item, last_child_item);
+    _slide_show_dlg->setModal(true);
+    _slide_show_dlg->showMaximized();
 }
 
 void ProTreeWidget::SlotOpenPro(const QString &path)

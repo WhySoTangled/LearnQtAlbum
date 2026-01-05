@@ -25,43 +25,50 @@ DEFINES += QT_DEPRECATED_WARNINGS
 INCLUDEPATH += $$PWD/inc
 
 SOURCES += \
+        src/picstatebtn.cpp \
+        src/slideshowdlg.cpp \
         src/main.cpp \
         src/mainwindow.cpp \
-    src/wizard.cpp \
-    src/prosetpage.cpp \
-    src/confirmpage.cpp \
-    src/protree.cpp \
-    src/protreewidget.cpp \
-    src/protreeitem.cpp \
-    src/protreethread.cpp \
-    src/removeprodialog.cpp \
-    src/opentreethread.cpp \
-    src/picshow.cpp \
-    src/picbutton.cpp
+        src/wizard.cpp \
+        src/prosetpage.cpp \
+        src/confirmpage.cpp \
+        src/protree.cpp \
+        src/protreewidget.cpp \
+        src/protreeitem.cpp \
+        src/protreethread.cpp \
+        src/removeprodialog.cpp \
+        src/opentreethread.cpp \
+        src/picshow.cpp \
+        src/picbutton.cpp
+
+#HEADERS += inc/*.h
 
 HEADERS += \
         inc/mainwindow.h \
-    inc/wizard.h \
-    inc/prosetpage.h \
-    inc/confirmpage.h \
-    inc/protree.h \
-    inc/protreewidget.h \
-    inc/protreeitem.h \
-    inc/const.h \
-    inc/protreethread.h \
-    inc/removeprodialog.h \
-    inc/opentreethread.h \
-    inc/picshow.h \
-    inc/picbutton.h
+        inc/picstatebtn.h \
+        inc/wizard.h \
+        inc/prosetpage.h \
+        inc/confirmpage.h \
+        inc/protree.h \
+        inc/protreewidget.h \
+        inc/protreeitem.h \
+        inc/const.h \
+        inc/protreethread.h \
+        inc/removeprodialog.h \
+        inc/opentreethread.h \
+        inc/picshow.h \
+        inc/picbutton.h \
+        inc/slideshowdlg.h
 
 FORMS += \
+        ui/slideshowdlg.ui \
         ui/mainwindow.ui \
-    ui/wizard.ui \
-    ui/prosetpage.ui \
-    ui/confirmpage.ui \
-    ui/protree.ui \
-    ui/removeprodialog.ui \
-    ui/picshow.ui
+        ui/wizard.ui \
+        ui/prosetpage.ui \
+        ui/confirmpage.ui \
+        ui/protree.ui \
+        ui/removeprodialog.ui \
+        ui/picshow.ui
 
 RESOURCES += \
     rc.qrc

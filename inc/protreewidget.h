@@ -10,6 +10,8 @@
 #include "inc/protreethread.h"
 #include "inc/opentreethread.h"
 
+class SlideShowDlg;
+
 class ProTreeWidget : public QTreeWidget
 {
     Q_OBJECT
@@ -19,6 +21,7 @@ public:
 
 private:
     QSet<QString> _set_path;
+    // item which was pressed by the right btn
     QTreeWidgetItem * _right_btn_item;
     QTreeWidgetItem * _active_item;
     QTreeWidgetItem * _selected_item;
@@ -34,6 +37,8 @@ private:
 
     std::shared_ptr<ProTreeThread> _thread_create_pro;
     std::shared_ptr<OpenTreeThread> _thread_open_pro;
+    std::shared_ptr<SlideShowDlg> _slide_show_dlg;
+
 private slots:
     void SlotItemPressed( QTreeWidgetItem * item, int column );
     void SlotImport();
@@ -45,6 +50,7 @@ private slots:
     void SlotUpdateOpenProgress(int count);
     void SlotFinishOpenProgress();
     void SlotDoubleClickItem(QTreeWidgetItem *item, int column);
+    void SlotSlideShow();
 public slots:
     void SlotOpenPro(const QString& path);
     void SlotPreShow();
