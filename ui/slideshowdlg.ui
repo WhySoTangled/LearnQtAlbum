@@ -108,7 +108,7 @@
           <height>120</height>
          </size>
         </property>
-        <widget class="QListWidget" name="preListWidget">
+        <widget class="PreListWid" name="preListWidget">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -128,6 +128,9 @@
            <width>16777215</width>
            <height>110</height>
           </size>
+         </property>
+         <property name="flow">
+          <enum>QListView::LeftToRight</enum>
          </property>
         </widget>
        </widget>
@@ -153,6 +156,11 @@
    <extends>QWidget</extends>
    <header>picanimationwid.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PreListWid</class>
+   <extends>QListWidget</extends>
+   <header>prelistwid.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

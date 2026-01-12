@@ -45,6 +45,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QTreeWidget* tree_widget = dynamic_cast<ProTree*>(_protree)->GetTreeWidget();
     auto * pro_tree_widget = dynamic_cast<ProTreeWidget*>(tree_widget);
     connect(this, &MainWindow::SigOpenPro, pro_tree_widget, &ProTreeWidget::SlotOpenPro);
+    connect(act_music, &QAction::triggered,
+            pro_tree_widget, &ProTreeWidget::SlotSetMusic);
 
     _picshow = new PicShow();
     ui->picLayout->addWidget(_picshow);

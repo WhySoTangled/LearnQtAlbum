@@ -28,8 +28,11 @@ void PicAnimationWid::SetPixmap(QTreeWidgetItem * item)
     _cur_item = pro_tree_item;
     if (_map_items.find(path) == _map_items.end()) {
         _map_items[path] = pro_tree_item;
-        // todo
+        // 发送更新预览逻辑
+        emit SigUpPreList(item);
     }
+
+    emit SigSelectItem(item);
 
     // todo : 这里还不知道获取next是干嘛的
     auto * next_item = pro_tree_item->GetNextItem();
@@ -40,15 +43,18 @@ void PicAnimationWid::SetPixmap(QTreeWidgetItem * item)
     _pixmap2.load(next_path);
     if (_map_items.find(next_path) == _map_items.end()) {
         _map_items[next_path] = next_item;
-        // todo
+        // 发送更新预览逻辑
+        emit SigUpPreList(next_item);
     }
 }
 
 void PicAnimationWid::Start()
 {
     _factor = 0.0;
-    _timer->start();
+    _timer->start(25);
     _b_start = true;
+    emit SigStartOrStop(_b_start);
+    emit SigStartOrStopMusic(_b_start);
 }
 
 void PicAnimationWid::Stop()
@@ -56,6 +62,48 @@ void PicAnimationWid::Stop()
     _timer->stop();
     _factor = 0.0;
     _b_start = false;
+    emit SigStartOrStop(_b_start);
+    emit SigStartOrStopMusic(_b_start);// false
+}
+
+/**
+ * @brief when SlideShowDlg's slideNextBtn is clicked, this func will ba called
+ */
+void PicAnimationWid::SlideNext()
+{
+    Stop();
+    if (!_cur_item) {
+        return ;
+    }
+
+    auto * cur_pro_item = dynamic_cast<ProTreeItem*>(_cur_item);
+    auto * next_item = cur_pro_item->GetNextItem();
+    if (!next_item) {
+        return ;
+    }
+    SetPixmap(next_item);
+    update();
+    //    Start();
+}
+
+/**
+ * @brief when SlideShowDlg's slidePreBtn is clicked, this func will ba called
+ */
+void PicAnimationWid::SlidePre()
+{
+    Stop();
+    if (!_cur_item) {
+        return ;
+    }
+
+    auto * cur_pro_item = dynamic_cast<ProTreeItem*>(_cur_item);
+    auto * pre_item = cur_pro_item->GetPreItem();
+    if (!pre_item) {
+        return ;
+    }
+    SetPixmap(pre_item);
+    update();
+    //    Start();
 }
 
 void PicAnimationWid::paintEvent(QPaintEvent *event)
@@ -111,6 +159,56 @@ void PicAnimationWid::paintEvent(QPaintEvent *event)
     x = (w - alphaPixmap_2.width()) / 2;
     y = (h - alphaPixmap_2.height()) / 2;
     painter.drawPixmap(x, y, alphaPixmap_2);
+}
+
+/**
+ * @brief called by slot func PicAnimationWid::SlotUpSelectPixmap
+ * @param item
+ */
+void PicAnimationWid::UpSelectPixmap(QTreeWidgetItem * item)
+{
+    if (!item) {
+        return ;
+    }
+    auto * tree_item = dynamic_cast<ProTreeItem*>(item);
+    auto path = tree_item->GetPath();
+    _pixmap1.load(path);
+    _cur_item = tree_item;
+
+    if (_map_items.find(path) == _map_items.end()) {
+        _map_items[path] = tree_item;
+    }
+
+    auto * next_item = tree_item->GetNextItem();
+//    todo : 这样判断是否会导致我点击list最后一张图，程序不会做任何操作?
+    if (!next_item) {
+        return;
+    }
+    auto next_path = next_item->GetPath();
+    _pixmap2.load(next_path);
+    if (_map_items.find(next_path) == _map_items.end()) {
+        _map_items[next_path] = next_item;
+    }
+}
+
+void PicAnimationWid::SlotUpSelectShow(QString path)
+{
+    auto iter = _map_items.find(path);
+    if (iter == _map_items.end()) {
+        return;
+    }
+    UpSelectPixmap(iter.value());
+    update();
+}
+
+void PicAnimationWid::SlotStartOrStop()
+{
+    if (!_b_start) {
+        Start();
+    } else {
+        Stop();
+        update();
+    }
 }
 
 /**

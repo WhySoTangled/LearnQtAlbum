@@ -29,6 +29,9 @@ private:
     QString _hover_2;
     QString _pressed_2;
     int _cur_state;
+
+public slots:
+    void SlotStartOrStop(bool);
 };
 
 #endif // PICSTATEBTN_H

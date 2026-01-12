@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,6 +27,8 @@ INCLUDEPATH += $$PWD/inc
 SOURCES += \
         src/picanimationwid.cpp \
         src/picstatebtn.cpp \
+        src/prelistitem.cpp \
+        src/prelistwid.cpp \
         src/slideshowdlg.cpp \
         src/main.cpp \
         src/mainwindow.cpp \
@@ -48,6 +50,8 @@ HEADERS += \
         inc/mainwindow.h \
         inc/picanimationwid.h \
         inc/picstatebtn.h \
+        inc/prelistitem.h \
+        inc/prelistwid.h \
         inc/wizard.h \
         inc/prosetpage.h \
         inc/confirmpage.h \

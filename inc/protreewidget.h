@@ -3,6 +3,8 @@
 
 #include <memory>
 #include <QAction>
+#include <QtMultimedia/QMediaPlayer>
+#include <QtMultimedia/QMediaPlaylist>
 #include <QPointer>
 #include <QProgressDialog>
 #include <QTreeWidget>
@@ -60,6 +62,8 @@ private:
     std::shared_ptr<ProTreeThread> _thread_create_pro;
     std::shared_ptr<OpenTreeThread> _thread_open_pro;
     std::shared_ptr<SlideShowDlg> _slide_show_dlg;
+    QMediaPlayer * _player;
+    QMediaPlaylist * _playlist;
 
 private slots:
     void SlotItemPressed( QTreeWidgetItem * item, int column );
@@ -77,6 +81,8 @@ public slots:
     void SlotOpenPro(const QString& path);
     void SlotPreShow();
     void SlotNextShow();
+    void SlotSetMusic();
+    void SlotStartOrStopMusic(bool);
 
 signals:
     void SigCancelProgress();

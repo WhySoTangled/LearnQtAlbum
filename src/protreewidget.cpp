@@ -30,6 +30,11 @@ ProTreeWidget::ProTreeWidget( QWidget *parent ) : QTreeWidget( parent ),
     connect(_action_setstart, &QAction::triggered, this, &ProTreeWidget::SlotSetActive);
     connect(_action_slideshow, &QAction::triggered, this, &ProTreeWidget::SlotSlideShow);
     connect(this, &ProTreeWidget::itemDoubleClicked, this, &ProTreeWidget::SlotDoubleClickItem);
+
+    _player = new QMediaPlayer(this);
+    _playlist = new QMediaPlaylist(this);
+    _playlist->setPlaybackMode(QMediaPlaylist::Loop);
+    _player->setPlaylist(_playlist);
 }
 
 /**
@@ -340,4 +345,43 @@ void ProTreeWidget::SlotNextShow()
     emit SigUpdatePic(curItem->GetPath());
     _selected_item = curItem;
     this->setCurrentItem(curItem);
+}
+
+void ProTreeWidget::SlotSetMusic()
+{
+    QFileDialog file_dialog;
+    file_dialog.setFileMode(QFileDialog::ExistingFiles);
+    file_dialog.setWindowTitle(tr("选择音频文件"));
+    file_dialog.setDirectory(QDir::currentPath());
+    file_dialog.setViewMode(QFileDialog::Detail);
+    file_dialog.setNameFilter("(*.mp3)");
+    QStringList fileNames;
+    if (file_dialog.exec()) {
+        fileNames = file_dialog.selectedFiles();
+    } else {
+        return ;
+    }
+
+    if (fileNames.length() <= 0) {
+        return ;
+    }
+
+    _playlist->clear();
+    for (auto filename : fileNames) {
+        _playlist->addMedia(QUrl::fromLocalFile(filename));
+    }
+    if (_player->state() != QMediaPlayer::PlayingState) {
+        _playlist->setCurrentIndex(0);
+    }
+}
+
+void ProTreeWidget::SlotStartOrStopMusic(bool flag)
+{
+    if (flag) {
+        qDebug()<< "ProTreeWidget::SlotStartOrStopMusic : start music" << Qt::endl;
+        _player->play();
+    } else {
+        qDebug()<< "ProTreeWidget::SlotStartOrStopMusic : stop music" << Qt::endl;
+        _player->pause();
+    }
 }
